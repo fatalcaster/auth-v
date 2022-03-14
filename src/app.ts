@@ -12,15 +12,7 @@ import { serializeValidationErrors } from "./helpers/serialize-validation-error"
 import "reflect-metadata";
 
 const app: FastifyInstance = fastify({
-  logger: {
-    prettyPrint:
-      config.NODE_ENV === "development"
-        ? {
-            translateTime: "HH:MM:ss Z",
-            ignore: "pid,hostname",
-          }
-        : false,
-  },
+  logger: true,
   trustProxy: true,
 });
 

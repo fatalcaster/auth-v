@@ -1,0 +1,46 @@
+{
+  "name": "webstore-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate-keypairs": "ts-node-dev ./certs/generateKeypairs.ts",
+    "start": "ts-node-dev src/index.ts",
+    "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js --config src/config/database.config.ts"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./src/test/setup.ts"
+    ]
+  },
+  "engines": {
+    "node": ">=12.0.0 <17.5.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^17.0.13",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^15.0.0",
+    "fastify": "^3.27.0",
+    "fastify-cookie": "^5.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "ts-node-dev": "^1.1.8",
+    "typeorm": "^0.2.45",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/uuid": "^8.3.4",
+    "jest": "^27.4.7",
+    "ts-jest": "^27.1.3"
+  }
+}

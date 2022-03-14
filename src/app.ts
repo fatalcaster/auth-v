@@ -1,4 +1,4 @@
-import config from "./config";
+import config from "./config/env.config";
 import fastify, { FastifyInstance } from "fastify";
 import { NotFoundError } from "./errors/not-found-error";
 import { errorHandler } from "./middlewares/error-handler";

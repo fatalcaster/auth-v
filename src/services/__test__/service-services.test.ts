@@ -55,7 +55,7 @@ it("updates an existing service authMethod with a valid id", async () => {
   expect(updatedService).not.toEqual(null);
 });
 
-it("attempts to update a service password that doesn't exist", async () => {
+it("attempts to update a password of a service that doesn't exist", async () => {
   const service = await updateServicePassword(ID.generate(), "password");
   expect(service).toEqual(null);
 });
@@ -83,8 +83,6 @@ it("attempts to update an email with an already existig email", async () => {
   const service = await createService({ email: "service@test.com" });
   const service1 = await createService({ email: "test@test.com" });
   expect(ID.isValid(service.id)).toEqual(true);
-  console.log("SERVICE1", service1);
-  console.log("SERVICE", service);
   try {
     // expectation: DB throws a concurrency error
     await updateServiceEmail(service1.id, service.email);
@@ -102,7 +100,7 @@ it("attempts an SQL injection attack", async () => {
       `WHERE email = service@test.com`,
       "test@test.com"
     );
-    console.log("ATTACK POSSIBLE", updatedService);
+    console.error("ATTACK POSSIBLE", updatedService);
     expect(true).toEqual(false);
   } catch (err) {
     expect(true).toEqual(true);

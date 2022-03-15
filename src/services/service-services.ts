@@ -2,11 +2,16 @@ import { RequiredEntityProps } from "../models/entity/base-entity";
 import { Service } from "../models/entity/service";
 import { getConnection } from "typeorm";
 import { AuthMethod } from "../interfaces/user-payload";
+import bcrypt from "bcrypt";
+
+const SALT_ROUNDS = 8;
 
 const createService = async (new_service: RequiredEntityProps<Service>) => {
   const service = new Service();
   service.email = new_service.email;
-  service.password = new_service.password;
+  service.password = new_service.password
+    ? await bcrypt.hash(new_service.password!, SALT_ROUNDS)
+    : undefined;
   service.users = [];
   await getConnection().manager.save(Service, service);
   return service;
@@ -35,21 +40,24 @@ const updateService = async (
 };
 
 const updateServiceAuthMethod = async (id: string, new_auth: AuthMethod) => {
-  const service = await getConnection().manager.update(
-    Service,
-    { id: id },
-    { authMethod: new_auth }
-  );
-  return service.affected ? service : null;
+  const service = await getConnection()
+    .manager.save(Service, { id: id, authMethod: new_auth })
+    .catch(() => {
+      return null;
+    });
+  return service;
 };
 
 const updateServicePassword = async (id: string, new_password: string) => {
-  const service = await getConnection().manager.update(
-    Service,
-    { id: id },
-    { password: new_password }
-  );
-  return service.affected ? service : null;
+  const service = await getConnection()
+    .manager.save(Service, {
+      id: id,
+      password: await bcrypt.hash(new_password, SALT_ROUNDS),
+    })
+    .catch(() => {
+      return null;
+    });
+  return service;
 };
 
 const updateServiceEmail = async (id: string, new_email: string) => {

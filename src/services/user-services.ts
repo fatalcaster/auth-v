@@ -25,6 +25,24 @@ const getUserById = async (id: string) => {
   return user || null;
 };
 
+const getUserByEmail = async (email: string, serviceId: string) => {
+  const user = await getConnection()
+    .getRepository(User)
+    .createQueryBuilder("user")
+    .where("user.email = :email", { email: email })
+    .andWhere("user.service = :serviceId", { serviceId: serviceId })
+    .innerJoinAndSelect("user.service", "service")
+    .select([
+      "user.id",
+      "user.email",
+      "user.password",
+      "user.created_at",
+      "service.authMethod",
+    ])
+    .getOne();
+  return user || null;
+};
+
 class GetManyUsersFilter {
   limit?: number = QUERY_LIMIT;
   skip?: number = 0;
@@ -131,6 +149,7 @@ const updateUserEmail = async (id: string, email: string) => {
 
 export {
   getUserById,
+  getUserByEmail,
   getManyUsers,
   createUser,
   deleteUser,

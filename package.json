@@ -6,7 +6,10 @@
   "scripts": {
     "generate-keypairs": "ts-node-dev ./certs/generateKeypairs.ts",
     "start": "ts-node-dev src/index.ts",
-    "test": "jest --watchAll --no-cache --runInBand --detectOpenHandles",
+    "test": "jest --watchAll --no-cache --detectOpenHandles",
+    "test:services": "jest --watchAll --no-cache --detectOpenHandles --testPathPattern=src/services",
+    "test:routes": "jest --watchAll --no-cache --detectOpenHandles --testPathPattern=src/routes",
+    "test:helpers": "jest --watchAll --no-cache --detectOpenHandles --testPathPattern=src/helpers",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js --config src/config/database.config.ts"
   },
   "jest": {
@@ -23,13 +26,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.0.0",
     "@types/bcrypt": "^5.0.0",
+    "@types/cors": "^2.8.12",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.13",
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^15.0.0",
-    "fastify": "^3.27.0",
+    "fastify": "^4.1.0",
     "fastify-cookie": "^5.5.0",
+    "fastify-session": "^5.2.1",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
@@ -38,6 +45,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.3.0",
     "@types/jest": "^27.4.0",
     "@types/uuid": "^8.3.4",
     "jest": "^27.4.7",

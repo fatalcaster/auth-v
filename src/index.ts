@@ -1,11 +1,11 @@
+import { createConnection } from "typeorm";
 import { app } from "./app";
-import config from "./config";
+import config from "./config/env.config";
+import dbConfig from "./config/database.config";
 const start = async () => {
-  if (!config.MONGO_URI) {
-    throw new Error("MONGO_URI must be defined!");
-  }
   try {
-    app.listen(config.PORT, "0.0.0.0", () => {
+    await createConnection(dbConfig);
+    app.listen({ port: config.PORT as number }, () => {
       console.log(`Listening on PORT ${config.PORT}`);
     });
   } catch (error) {

@@ -3,6 +3,7 @@ import { AuthMethod } from "../../interfaces/user-payload";
 import {
   createService,
   deleteService,
+  getServiceByEmail,
   getServiceById,
   updateServiceAuthMethod,
   updateServiceEmail,
@@ -24,6 +25,19 @@ it("attempts to create two services with the same email", async () => {
 it("successfully creates a service", async () => {
   const service = await createService({ email: "service@test.com" });
   expect(ID.isValid(service.id)).toEqual(true);
+});
+
+it("attempts to get a service by email that doesn't exist", async () => {
+  const service = await getServiceByEmail("rand@gras.com");
+  expect(service).toEqual(null);
+});
+
+it("attempts to get a service with a valid email", async () => {
+  const email = "service@serve.com";
+  await createService({ email: email });
+  const existing_service = await getServiceByEmail(email);
+  expect(existing_service).not.toEqual(null);
+  expect(existing_service?.email).toEqual(email);
 });
 
 it("attempts to get a service that doesn't exist", async () => {

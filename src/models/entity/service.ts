@@ -1,4 +1,5 @@
 import { Entity, Column, OneToMany } from "typeorm";
+import { PasswordRequirement } from "../../helpers/cred-helper";
 import { AuthMethod } from "../../interfaces/user-payload";
 import { CustomBaseEntity } from "./base-entity";
 import { User } from "./user";
@@ -15,9 +16,17 @@ export class Service extends CustomBaseEntity {
     nullable: false,
     type: "enum",
     enum: AuthMethod,
-    default: AuthMethod.jwt,
+    default: AuthMethod.session,
   })
   authMethod?: AuthMethod;
+
+  @Column({
+    nullable: false,
+    type: "enum",
+    enum: PasswordRequirement,
+    default: PasswordRequirement.includeNumbers,
+  })
+  passwordRequirement?: PasswordRequirement;
 
   @OneToMany((_type) => User, (user) => user.service, { cascade: true })
   users?: User[];

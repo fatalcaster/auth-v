@@ -9,6 +9,7 @@ import {
   createUser,
   deleteUser,
   getManyUsers,
+  getUserByEmail,
   getUserById,
   updateUserEmail,
   updateUserPassword,
@@ -59,9 +60,22 @@ it("creates multiple valid users at once", async () => {
   }
 });
 
+it("attempts to get a user with an email that doesn't exist", async () => {
+  const service = await createServiceProvider();
+  const user = await getUserByEmail("test@uknown.com", service.id);
+  expect(user).toEqual(null);
+});
+
 it("attempts to get a user that doesn't exist", async () => {
   const service = await getUserById(ID.generate());
   expect(service).toEqual(null);
+});
+
+it("attempts to get a user with a valid email", async () => {
+  const user = await createValidUser();
+  const response = await getUserByEmail(user.user.email, user.service.id);
+
+  expect(response).not.toEqual(null);
 });
 
 it("attempts to get users from a non-existent service", async () => {

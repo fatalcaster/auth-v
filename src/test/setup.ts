@@ -1,6 +1,6 @@
 import { createConnection, getConnection } from "typeorm";
 import { app } from "../app";
-import { authRoutes } from "../routes/route-opts/auth-opts";
+import { serviceRoutes } from "../routes/route-opts/service-opts";
 import dbConfig from "./../config/database.config";
 declare global {
   var getAuthCookie: () => Promise<
@@ -44,7 +44,7 @@ afterAll(async () => {
 global.getAuthCookie = async () => {
   const response = await app.inject({
     method: "POST",
-    url: authRoutes.emailSignUp,
+    url: serviceRoutes.emailSignUp,
     payload: {
       email: "test@test.com",
       password: "Password123",

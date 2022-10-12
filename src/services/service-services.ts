@@ -17,7 +17,15 @@ const createService = async (new_service: RequiredEntityProps<Service>) => {
   return service;
 };
 
+const getServiceByEmail = async (email: string) => {
+  const service = await getConnection().manager.findOne(Service, {
+    where: { email: email },
+  });
+  return service ? service : null;
+};
+
 const getServiceById = async (id: string) => {
+  if (id === "") return null;
   const service = await getConnection().manager.findOne(Service, id);
   return service ? service : null;
 };
@@ -78,6 +86,7 @@ const deleteService = async (id: string) => {
 };
 
 export {
+  getServiceByEmail,
   createService,
   getServiceById,
   updateService,
